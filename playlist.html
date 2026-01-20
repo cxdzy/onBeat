@@ -1,447 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <script>
-        const savedTheme = localStorage.getItem("selectedTheme") || "light";
-        document.documentElement.className = savedTheme + "-theme";
-    </script>
-    <meta charset="UTF-8">
-    <title>onBeat | Music Experience</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>onBeat | Music Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+<style>
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* Animated gradient background */
+body {
+    background: linear-gradient(270deg, #ff6a6a, #ffc371, #00d9ff, #be3bff);
+    background-size: 800% 800%;
+    animation: gradientShift 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
+}
+
+@keyframes gradientShift {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Logo + Title */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn 1.5s ease forwards;
+    opacity: 0;
+}
+
+.logo-container img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(255,255,255,0.6);
+    animation: bounceLogo 2s infinite;
+}
+
+.logo-container h1 {
+    font-size: 5rem;
+    text-shadow: 0 0 20px rgba(0,0,0,0.5);
+    letter-spacing: 5px;
+    animation: fadeIn 2s ease forwards 0.5s;
+}
+
+/* Button */
+.btn-start {
+    padding: 20px 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    border: 2px solid #fff;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-top: 40px;
+    animation: fadeIn 2s ease forwards 1s;
+}
+
+.btn-start:hover {
+    background: #fff;
+    color: #000;
+    transform: scale(1.1);
+}
+
+/* Music visualizer bars */
+.bars {
+    display: flex;
+    gap: 8px;
+    margin-top: 60px;
+    justify-content: center;
+}
+
+.bar {
+    width: 12px;
+    height: 40px;
+    background: rgba(255,255,255,0.8);
+    animation: bounce 1s infinite;
+    border-radius: 6px;
+}
+
+.bar:nth-child(1) { animation-delay: 0s; }
+.bar:nth-child(2) { animation-delay: 0.2s; }
+.bar:nth-child(3) { animation-delay: 0.4s; }
+.bar:nth-child(4) { animation-delay: 0.6s; }
+.bar:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes bounce {
+    0%, 100% { height: 40px; }
+    50% { height: 100px; }
+}
+
+/* Logo bounce */
+@keyframes bounceLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Fade in for elements */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Floating musical notes */
+.note {
+    position: absolute;
+    bottom: -50px;
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.7);
+    animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity:1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity:0; }
+}
+
+/* Responsive */
+@media screen and (max-width: 768px){
+    .logo-container h1 { font-size: 3rem; }
+    .btn-start { padding: 15px 40px; font-size: 1.2rem; }
+}
+</style>
 </head>
+<body>
 
+<!-- Logo + Title -->
+<div class="logo-container">
+    <img src="assets/ir.png" alt="onBeat Logo">
+    <h1>onBeat</h1>
+</div>
 
-<body class="light-theme">
-    <nav class="main-nav">
-        <div class="logo-container">
-            <div class="logo-frame">
-                <img src="assets/ir.png" alt="onBeat Logo" class="app-logo">
-            </div>
-            <h1 class="app-name">onBeat</h1>
-        </div>
-        <ul>
-            <li><a href="index.html"> Home</a></li>
-            <li><a href="playlist.html"> My Playlist</a></li>
-            <li><a href="about.html"> Our Team</a></li>
-        </ul>
+<!-- Button -->
+<a href="index.html" class="btn-start">Get Started</a>
 
-        <div class="user-input">
-            <input type="text" id="userName" placeholder="Search song" style="width: 70%;">
-            <button onclick="greetUser()">Go</button>
-        </div>
- 
+<!-- Music Bars -->
+<div class="bars">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
 
-        <div class="theme-switch">
-            <button onclick="changeTheme('light')"><i class="fas fa-sun"></i></button>
-            <button onclick="changeTheme('dark')"><i class="fas fa-moon"></i></button>
-            <!-- <button onclick="changeTheme('colorblind')">High Contrast</button> -->
-        </div>
-    </nav>
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
+<!-- Floating Musical Notes -->
+<script>
+const notes = ['\u266A', '\u266B', '\u266C', '\u2669', '\u266A'];
+for(let i=0; i<15; i++){
+    const note = document.createElement('div');
+    note.className = 'note';
+    note.textContent = notes[Math.floor(Math.random()*notes.length)];
+    note.style.left = Math.random()*100 + 'vw';
+    note.style.fontSize = (Math.random()*20 + 15) + 'px';
+    note.style.animationDuration = (Math.random()*3 + 4) + 's';
+    document.body.appendChild(note);
+}
+</script>
 
-
-    <main class="playlist-container">
-        <section class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search by song or artist..." onkeyup="filterPlaylist()">
-            <button id="addPlaylistBtn" class="btn-add">+</button>
-        </section>
-
-        <!-- Popup Form -->
-        <div id="playlistPopup" class="popup-overlay">
-            <div class="popup-content">
-                <h3>Create New Playlist</h3>
-                <label for="playlistName">Playlist Name:</label>
-                <input type="text" id="playlistName" placeholder="Enter playlist name">
-
-                <label for="playlistImage">Cover Image:</label>
-                <input type="file" id="playlistImage" accept="image/*">
-
-                <div class="popup-buttons">
-                    <button id="savePlaylistBtn" type="button">Save</button>
-                    <button id="cancelPlaylistBtn">Cancel</button>
-                </div>
-            </div>
-        </div>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const addBtn = document.getElementById('addPlaylistBtn');
-                const popup = document.getElementById('playlistPopup');
-                const cancelBtn = document.getElementById('cancelPlaylistBtn');
-
-                addBtn.addEventListener('click', () => {
-                    popup.style.display = 'flex';
-                });
-
-                cancelBtn.addEventListener('click', () => {
-                    popup.style.display = 'none';
-                });
-
-                popup.addEventListener('click', (e) => {
-                    if (e.target === popup) popup.style.display = 'none';
-                });
-            });
-        </script>
-
-        <div id="playlistListView">
-            <table id="playlistTable">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Cover</th>
-                        <th>Title</th>
-                        <th>Artist</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="playlistBody">
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Playlist Detail -->
-        <div id="playlistDetailView" style="display:none;">
-            <button onclick="backToList()">⬅ Back</button>
-            <h2 id="detailTitle"></h2>
-            <img id="detailImage" src="" alt="Playlist Cover" style="width:200px;">
-
-            <!-- Button tambah lagu -->
-            <button id="addSongBtn" style="margin: 15px 0;">+ Add Song</button>
-
-            <!-- Table lagu dalam playlist -->
-            <table id="songTable">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Song Title</th>
-                        <th>Artist</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="songBody">
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Popup pilih lagu sedia ada -->
-        <div id="songPopup" class="popup-overlay" style="display:none;">
-            <div class="popup-content">
-                <h3>Select Song to Add</h3>
-                <div id="allSongsList">
-                    <!-- Senarai lagu akan generate secara JS -->
-                </div>
-                <div class="popup-buttons">
-                    <button id="saveSongBtn">Save</button>
-                    <button id="cancelSongBtn">Cancel</button>
-                </div>
-            </div>
-        </div>
-        <script>
-            const songPopup = document.getElementById('songPopup');
-            const addSongBtn = document.getElementById('addSongBtn');
-            const cancelSongBtn = document.getElementById('cancelSongBtn');
-            const saveSongBtn = document.getElementById('saveSongBtn');
-            const allSongsList = document.getElementById('allSongsList');
-
-            // buka popup
-            addSongBtn.addEventListener('click', () => {
-                songPopup.style.display = 'flex';
-                renderAllSongs();
-            });
-
-            // tutup popup
-            cancelSongBtn.addEventListener('click', () => {
-                songPopup.style.display = 'none';
-            });
-
-            // render senarai lagu sedia ada dengan checkbox
-            // Bila user klik "+ Add Song", render senarai lagu dari tracks
-            function renderAllSongs() {
-                allSongsList.innerHTML = ''; // kosongkan dulu
-                tracks.forEach((track, index) => {
-                    const div = document.createElement('div');
-                    div.innerHTML = `
-            <input type="checkbox" id="song${index}" value="${index}">
-            <label for="song${index}">${track.title} - ${track.artist}</label>
-        `;
-                    allSongsList.appendChild(div);
-                });
-            }
-
-
-            // simpan lagu dipilih ke playlist
-            saveSongBtn.addEventListener('click', () => {
-                const checkboxes = allSongsList.querySelectorAll('input[type="checkbox"]:checked');
-                checkboxes.forEach(cb => {
-                    const track = tracks[cb.value];
-                    if (!playlists[currentPlaylistIndex].songs) playlists[currentPlaylistIndex].songs = [];
-                    playlists[currentPlaylistIndex].songs.push({
-                        title: track.title,
-                        artist: track.artist,
-                        src: track.src,
-                        cover: track.cover
-                    });
-                });
-
-                displaySongs();
-                saveToLocalStorage();  // <- simpan lagu ke storage
-                songPopup.style.display = 'none';
-            });
-
-        </script>
-
-
-
-        <section class="export-area">
-            <button onclick="printPlaylist()" class="btn-print">
-                <i class="fas fa-print"></i> Print Playlist Report
-            </button>
-        </section>
-    </main>
-
-    <script>
-        // Ambil elemen
-        const playlistBody = document.getElementById('playlistBody');
-        const saveBtn = document.getElementById('savePlaylistBtn');
-        const playlistNameInput = document.getElementById('playlistName');
-        const playlistImageInput = document.getElementById('playlistImage');
-        const popup = document.getElementById('playlistPopup');
-        // Array untuk simpan playlist
-        let playlists = [];
-        // Fungsi display playlist
-        function displayPlaylist() {
-            playlistBody.innerHTML = ''; // Kosongkan table
-            playlists.forEach((playlist, index) => {
-                const row = document.createElement('tr');
-                // Nomor
-                const noCell = document.createElement('td');
-                noCell.textContent = index + 1;
-                row.appendChild(noCell);
-                // Cover Image
-                const coverCell = document.createElement('td');
-                const img = document.createElement('img');
-                img.src = playlist.image || 'assets/default-cover.png'; // default kalau tak ada gambar
-                img.style.width = '50px';
-                img.style.height = '50px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '5px';
-                coverCell.appendChild(img);
-                row.appendChild(coverCell);
-                // Playlist Name
-                const nameCell = document.createElement('td');
-                nameCell.textContent = playlist.name;
-                row.appendChild(nameCell);
-                // Artist (kosongkan dulu)
-                const artistCell = document.createElement('td');
-                artistCell.textContent = '-';
-                row.appendChild(artistCell);
-                // Action
-                const actionCell = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Delete';
-                deleteBtn.style.background = '#e74c3c';
-                deleteBtn.style.color = '#fff';
-                deleteBtn.style.border = 'none';
-                deleteBtn.style.padding = '5px 10px';
-                deleteBtn.style.borderRadius = '5px';
-                deleteBtn.style.cursor = 'pointer';
-                deleteBtn.onclick = () => {
-                    playlists.splice(index, 1);
-                    displayPlaylist();
-                };
-                actionCell.appendChild(deleteBtn);
-                row.appendChild(actionCell);
-                row.style.cursor = 'pointer';
-                row.onclick = () => openPlaylistDetail(index);
-                playlistBody.appendChild(row);
-            });
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('playlists', JSON.stringify(playlists));
-        }
-        window.onload = function () {
-            const saved = localStorage.getItem('playlists');
-            if (saved) {
-                playlists = JSON.parse(saved);
-            }
-            displayPlaylist();
-        };
-        let currentPlaylistIndex = null; // simpan index playlist yang sedang dibuka
-
-        function openPlaylistDetail(index) {
-            currentPlaylistIndex = index;
-            const playlist = playlists[index];
-
-            document.getElementById('playlistListView').style.display = 'none';
-            document.getElementById('playlistDetailView').style.display = 'block';
-
-            document.getElementById('detailTitle').textContent = playlist.name;
-            document.getElementById('detailImage').src = playlist.image || 'assets/default-cover.png';
-
-            displaySongs();
-        }
-
-        function backToList() {
-            document.getElementById('playlistDetailView').style.display = 'none';
-            document.getElementById('playlistListView').style.display = 'block';
-        }
-        let currentAudio = null;
-
-        function playSong(song) {
-            // kalau ada audio sedang main, stop dulu
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-
-            // buat audio baru
-            currentAudio = new Audio(song.src);
-            currentAudio.play()
-                .then(() => {
-                    showNotification(`Playing: ${song.title}`);
-                })
-                .catch(err => {
-                    console.log("Error playing audio:", err);
-                });
-        }
-
-
-
-        // Display songs in playlist
-        function displaySongs() {
-            const songBody = document.getElementById('songBody');
-            songBody.innerHTML = '';
-            const songs = playlists[currentPlaylistIndex].songs || [];
-
-            songs.forEach((song, index) => {
-                const row = document.createElement('tr');
-
-                row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${song.title}</td>
-        <td>${song.artist}</td>
-        <td>
-            <button onclick="removeSong(${index})" style="background:#e74c3c;color:#fff;border:none;padding:3px 8px;border-radius:5px;cursor:pointer;">Delete</button>
-        </td>
-    `;
-
-                row.onclick = (e) => {
-                    if (e.target.tagName !== 'BUTTON') { // supaya delete button tak trigger
-                        playSong(song);
-                    }
-                };
-
-
-                songBody.appendChild(row);
-            });
-
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('playlists', JSON.stringify(playlists));
-        }
-        window.onload = function () {
-            // Ambil playlist dari localStorage kalau ada
-            const saved = localStorage.getItem('playlists');
-            if (saved) {
-                playlists = JSON.parse(saved);
-            }
-            displayPlaylist();
-        };
-
-
-
-        // Fungsi simpan playlist baru
-        saveBtn.addEventListener('click', () => {
-            const name = playlistNameInput.value.trim();
-            const imageFile = playlistImageInput.files[0];
-
-            if (!name) {
-                alert('Please enter a playlist name!');
-                return;
-            }
-
-            if (imageFile) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    playlists.push({
-                        name: name,
-                        image: e.target.result
-                    });
-                    displayPlaylist();
-                    saveToLocalStorage();  // simpan ke localStorage
-                    showNotification('Playlist saved successfully! ✅');
-                };
-                reader.readAsDataURL(imageFile);
-            } else {
-                playlists.push({
-                    name: name,
-                    image: null
-                });
-                displayPlaylist();
-                saveToLocalStorage();  // simpan ke localStorage
-                showNotification('Playlist saved successfully! ✅');
-            }
-
-            playlistNameInput.value = '';
-            playlistImageInput.value = '';
-            popup.style.display = 'none';
-        });
-
-        // Optional: search/filter playlist
-        function filterPlaylist() {
-            const filter = document.getElementById('searchInput').value.toLowerCase();
-            const rows = playlistBody.getElementsByTagName('tr');
-            for (let row of rows) {
-                const nameCell = row.cells[2];
-                if (nameCell.textContent.toLowerCase().indexOf(filter) > -1) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        }
-        // Fungsi print
-        function printPlaylist() {
-            const printContent = document.getElementById('playlistTable').outerHTML;
-            const newWin = window.open('', '', 'width=800,height=600');
-            newWin.document.write('<html><head><title>Print Playlist</title></head><body>');
-            newWin.document.write(printContent);
-            newWin.document.write('</body></html>');
-            newWin.document.close();
-            newWin.print();
-        }
-    </script>
-    <script>
-        function openPlaylistDetail(index) {
-            currentPlaylistIndex = index;
-            const playlist = playlists[index];
-
-            document.getElementById('playlistListView').style.display = 'none';
-            document.getElementById('playlistDetailView').style.display = 'block';
-
-            document.getElementById('detailTitle').textContent = playlist.name;
-            document.getElementById('detailImage').src = playlist.image || 'assets/default-cover.png';
-
-            // kalau playlist tak ada property 'songs', buat array kosong
-            if (!playlist.songs) playlist.songs = [];
-
-            displaySongs();
-        }
-
-
-        // Back button
-        function backToList() {
-            document.getElementById('playlistDetailView').style.display = 'none';
-            document.getElementById('playlistListView').style.display = 'block';
-        }
-
-    </script>
-    <script src="script.js"></script>
 </body>
-
 </html>
