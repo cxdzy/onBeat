@@ -1380,15 +1380,17 @@ tr:hover {
 
 /* Floating musical notes */
 .note {
-    position: absolute;
+    position: fixed;   /* 👉 fixed supaya tak mempengaruhi body height */
     bottom: -50px;
     color: rgba(255, 255, 255, 0.7);
     font-size: 16px;
     animation-name: floatUp;
     animation-timing-function: linear;
-    animation-iteration-count: 1; /* sekali je */
+    animation-iteration-count: 1;
+    pointer-events: none; /* jangan ganggu klik */
     will-change: transform;
 }
+
 
 @keyframes floatUp {
     0% { transform: translateY(0) rotate(0deg); opacity:1; }

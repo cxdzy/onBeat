@@ -1,22 +1,22 @@
 
 function createFloatingNotes(amount = 10) {
 
-const notes = ['\u266A', '\u266B', '\u266C', '\u2669', '\u266A'];
+    const notes = ['\u266A', '\u266B', '\u266C', '\u2669', '\u266A'];
 
-function spawnNote() {
-    const note = document.createElement('div');
-    note.className = 'note';
-    note.textContent = notes[Math.floor(Math.random() * notes.length)];
-    note.style.left = Math.random() * 100 + 'vw';
-    note.style.fontSize = (Math.random() * 20 + 15) + 'px';
-    note.style.animationDuration = (Math.random() * 3 + 4) + 's';
+    function spawnNote() {
+        const note = document.createElement('div');
+        note.className = 'note';
+        note.textContent = notes[Math.floor(Math.random() * notes.length)];
+        note.style.left = Math.random() * 100 + 'vw';
+        note.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        note.style.animationDuration = (Math.random() * 3 + 4) + 's';
 
-    note.addEventListener('animationend', () => note.remove());
-    document.body.appendChild(note);
-}
+        note.addEventListener('animationend', () => note.remove());
+        document.body.appendChild(note);
+    }
 
-// Spawn note every 500ms
-setInterval(spawnNote, 2000);
+    // Spawn note every 500ms
+    setInterval(spawnNote, 2000);
 
 
 }
@@ -531,38 +531,50 @@ function loadTrack(index) {
 /* =========================
    SYNC LYRICS
 ========================= */
+const lyricsBox = document.getElementById("lyricsBox");
+
 audio.addEventListener("timeupdate", () => {
     const time = audio.currentTime;
     const lines = document.querySelectorAll("#lyricsContent p");
 
     for (let i = 0; i < lines.length; i++) {
         const current = parseFloat(lines[i].dataset.time);
-        const next = lines[i + 1]
-            ? parseFloat(lines[i + 1].dataset.time)
-            : Infinity;
+        const next = lines[i + 1] ? parseFloat(lines[i + 1].dataset.time) : Infinity;
 
         if (time >= current && time < next && currentLyricIndex !== i) {
             currentLyricIndex = i;
 
+            // Hapus semua class
             lines.forEach((line, index) => {
                 line.classList.remove("active", "past", "future");
-
-                if (index < i) {
-                    line.classList.add("past");
-                } else if (index > i) {
-                    line.classList.add("future");
-                }
+                if (index < i) line.classList.add("past");
+                else if (index > i) line.classList.add("future");
             });
+
+            // Tandakan active
             lines[i].classList.add("active");
 
-            lines[i].scrollIntoView({
-                behavior: "smooth",
-                block: "center"
+            // ===== Scroll ke tengah lyric box =====
+            const activeLine = lines[i];
+
+            // Posisi line relatif ke container
+            const lineTop = activeLine.offsetTop;
+            const lineHeight = activeLine.offsetHeight;
+            const containerHeight = lyricsBox.clientHeight;
+
+            // Scroll supaya line active di tengah
+            const scrollTop = lineTop - containerHeight / 2 + lineHeight / 2;
+
+            lyricsBox.scrollTo({
+                top: scrollTop,
+                behavior: "smooth"
             });
+
             break;
         }
     }
 });
+
 
 
 /* =========================
