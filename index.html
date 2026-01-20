@@ -121,12 +121,13 @@
 
 
         </div>
-        <div class="logo-container">
+        <div class="logo-container" onclick="location.href='playlist.html'" style="cursor:pointer;">
             <div class="logo-frame">
                 <img src="assets/ir.png" alt="onBeat Logo" class="app-logo">
             </div>
             <h1 class="app-name"><strong>onBeat</strong></h1>
         </div>
+
         <ul>
             <!-- <li><a href="index.html"> Home</a></li> -->
             <!-- <li><a href="playlist.html"> My Playlist</a></li> -->
@@ -253,11 +254,13 @@
 
     <div id="playlistPage" style="display:none;">
         <main class="playlist-container">
-            <section class="search-bar">
-                <!-- <input type="text" id="searchInput" placeholder="Search by song or artist..."
-                    onkeyup="filterPlaylist()"> -->
+            <section class="search-bar"
+                style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <h2 style="color: var(--accent-color); font-size: 1.5rem;">Playlist</h2>
+                <!-- <input type="text" id="searchInput" placeholder="Search by song or artist..." onkeyup="filterPlaylist()"> -->
                 <button id="addPlaylistBtn" class="btn-add">+ Create Playlist</button>
             </section>
+
 
             <!-- Popup Form -->
             <div id="playlistPopup" class="popup-overlay" style="display:none;">
@@ -269,12 +272,43 @@
                     <label for="playlistImage">Cover Image:</label>
                     <input type="file" id="playlistImage" accept="image/*">
 
+                    <!-- Pilihan Default Cover -->
+                    <p style="margin-top:10px; font-size:0.9rem; color: var(--text-color);">Or choose a default cover:
+                    </p>
+                    <div id="defaultCovers" style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
+                        <img src="assets/albumart1.jpg" class="default-cover"
+                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                        <img src="assets/albumart2.jpg" class="default-cover"
+                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                        <img src="assets/albumart3.jpg" class="default-cover"
+                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                    </div>
+
                     <div class="popup-buttons">
                         <button id="savePlaylistBtn" type="button">Save</button>
                         <button id="cancelPlaylistBtn">Cancel</button>
                     </div>
                 </div>
             </div>
+
+            <script>// Pilih default cover
+                const defaultCovers = document.querySelectorAll('.default-cover');
+                let selectedDefaultCover = null;
+
+                defaultCovers.forEach(img => {
+                    img.addEventListener('click', () => {
+                        // HIGHLIGHT yg dipilih
+                        defaultCovers.forEach(i => i.style.border = '2px solid transparent');
+                        img.style.border = '2px solid var(--accent-color)';
+                        selectedDefaultCover = img.src;
+
+                        // kosongkan file input kalau user pilih default
+                        playlistImageInput.value = '';
+                    });
+                });
+
+          
+            </script>
             <script>
                 document.addEventListener('DOMContentLoaded', () => {
                     const addBtn = document.getElementById('addPlaylistBtn');
@@ -596,44 +630,49 @@
 
 
             // Fungsi simpan playlist baru
-            saveBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // 🔒 SAFETY
-                e.stopImmediatePropagation();
+       saveBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
 
-                const name = playlistNameInput.value.trim();
-                const imageFile = playlistImageInput.files[0];
+    const name = playlistNameInput.value.trim();
+    const imageFile = playlistImageInput.files[0];
 
-                if (!name) {
-                    alert('Please enter a playlist name!');
-                    return; // 🔥 INI YANG KURANG
-                }
+    if (!name) {
+        alert('Please enter a playlist name!');
+        return;
+    }
 
-                if (imageFile) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        playlists.push({
-                            name: name,
-                            image: e.target.result
-                        });
-                        saveToLocalStorage();
-                        displayPlaylist();
-                        showNotification('Playlist saved successfully! ✅');
-                    };
-                    reader.readAsDataURL(imageFile);
-                } else {
-                    playlists.push({
-                        name: name,
-                        image: null
-                    });
-                    saveToLocalStorage();
-                    displayPlaylist();
-                    showNotification('Playlist saved successfully! ✅');
-                }
+    function finalizeSave(imageData) {
+        playlists.push({
+            name: name,
+            image: imageData
+        });
+        saveToLocalStorage();
+        displayPlaylist();
+        showNotification('Playlist saved successfully! ✅');
 
-                playlistNameInput.value = '';
-                playlistImageInput.value = '';
-                popup.style.display = 'none';
-            });
+        playlistNameInput.value = '';
+        playlistImageInput.value = '';
+        selectedDefaultCover = null;
+        document.querySelectorAll('.default-cover').forEach(i => i.style.border = '2px solid transparent');
+        popup.style.display = 'none';
+    }
+
+    if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            finalizeSave(e.target.result);
+        };
+        reader.readAsDataURL(imageFile);
+    } else if (selectedDefaultCover) {
+        finalizeSave(selectedDefaultCover);
+    } else {
+        // fallback: random default jika user tak pilih
+        const defaultCovers = ['assets/default1.png','assets/default2.png','assets/default3.png'];
+        finalizeSave(defaultCovers[Math.floor(Math.random()*defaultCovers.length)]);
+    }
+});
+
 
 
             // Optional: search/filter playlist
@@ -701,32 +740,32 @@
             </div>
 
             <section class="about-team">
-    <h2>Our Development Team</h2>
-    <p>Meet the amazing team behind onBeat</p>
+                <h2>Our Development Team</h2>
+                <p>Meet the amazing team behind onBeat</p>
 
-    <div class="team-grid">
-        <div class="team-member">
-            <img src="assets/Ameen2.png" alt="Ameen" class="team-photo">
-            <h3>Ameen</h3>
-            <p>Frontend Developer</p>
-        </div>
-        <div class="team-member">
-            <img src="assets/Naqib.jpeg" alt="Naqib" class="team-photo">
-            <h3>Naqib</h3>
-            <p>Backend Developer</p>
-        </div>
-        <div class="team-member">
-            <img src="assets/Acap.jpeg" alt="Asyraf" class="team-photo">
-            <h3>Asyraf</h3>
-            <p>UI/UX Designer</p>
-        </div>
-        <div class="team-member">
-            <img src="assets/Abey.jpeg" alt="Danish" class="team-photo">
-            <h3>Danish</h3>
-            <p>Project Manager</p>
-        </div>
-    </div>
-</section>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="assets/Ameen.png" alt="Ameen" class="team-photo">
+                        <h3>Ameen Akeef</h3>
+                        <p>Frontend Developer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="assets/Naqib2.png" alt="Naqib" class="team-photo">
+                        <h3>Haziq Naqib</h3>
+                        <p>Backend Developer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="assets/Acap.png" alt="Asyraf" class="team-photo">
+                        <h3>Zarith Asyraf</h3>
+                        <p>UI/UX Designer</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="assets/Abey.png" alt="Danish" class="team-photo">
+                        <h3>Danish Haikal</h3>
+                        <p>Project Manager</p>
+                    </div>
+                </div>
+            </section>
 
             <div class="floating-controls">
                 <button onclick="prevSong()" title="Previous">

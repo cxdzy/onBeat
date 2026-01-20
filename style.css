@@ -217,6 +217,19 @@ input[type="text"] {
     color: #fff;
 }
 
+/* ================== ANIMATION ================== */
+@keyframes popupFade {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* 6. Report & Navigation */
 .report {
     margin-top: 30px;
@@ -239,20 +252,21 @@ nav a {
 
 /* Playlist Styling */
 .playlist-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
     background: var(--card-bg);
-    border-radius: 15px;
-
-    /* max-height: 75vh; */
-    overflow-y: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 
 
+/* SEARCH BAR & ADD BUTTON */
 .search-bar {
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
 }
 
 .suggestions-box {
@@ -288,26 +302,43 @@ nav a {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 th,
 td {
-    padding: 12px;
+    padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: var(--accent-color);
-    color: white;
+    background: var(--accent-color);
+    color: #fff;
+    font-size: 0.95rem;
 }
 
-.playlist-thumb {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
+td {
+    font-size: 0.9rem;
+}
+
+tr {
+    transition: background 0.25s, transform 0.2s;
+}
+
+tr:hover {
+    background: rgba(52, 152, 219, 0.1);
+    transform: translateX(2px);
+}
+
+
+/* Playlist cover thumbnails */
+.playlist-thumb,
+#playlistTable img {
+    width: 50px;
+    height: 50px;
     object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .btn-print {
@@ -530,43 +561,35 @@ th {
 /* Overlay */
 .popup-overlay {
     display: none;
-    /* Hidden by default */
     position: fixed;
     inset: 0;
-    /* top:0; right:0; bottom:0; left:0; */
-    background: rgba(0, 0, 0, 0.6);
-    /* semi-transparent gelap */
-    display: flex;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(4px);
-    /* Blur background untuk vibe modern */
+    padding: 15px;
 }
 
-/* Popup Card */
 .popup-content {
+    width: 100%;
+    max-width: 400px;
     background: var(--card-bg);
-    /* ikut light/dark theme */
     color: var(--text-color);
-    padding: 25px 30px;
-    border-radius: 15px;
-    width: 350px;
-    max-width: 90%;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
+    animation: popupFade 0.3s ease;
 }
 
-/* Headings */
 .popup-content h3 {
-    margin-bottom: 10px;
-    font-size: 1.3rem;
-    text-align: center;
+    font-size: 1.5rem;
     color: var(--accent-color);
 }
+
 
 /* Inputs */
 .popup-content input[type="text"],
@@ -591,8 +614,7 @@ th {
 .popup-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
 }
 
 /* Buttons Styling */
@@ -608,27 +630,32 @@ th {
 /* Save button */
 #savePlaylistBtn,
 #saveSongBtn {
-    background-color: var(--accent-color);
+    background: var(--accent-color);
     color: #fff;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 10px 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #savePlaylistBtn:hover,
 #saveSongBtn:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
+    background: var(--hover-color);
+    transform: translateY(-2px);
 }
 
 /* Cancel button */
 #cancelPlaylistBtn,
 #cancelSongBtn {
-    background-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
+    border-radius: 25px;
+    padding: 10px 20px;
 }
 
 #cancelPlaylistBtn:hover,
 #cancelSongBtn:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Song List Container */
@@ -902,11 +929,12 @@ th {
 
 
 
+/* ================== PLAYLIST DETAIL ================== */
 .playlist-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 /* Back Button */
@@ -925,56 +953,58 @@ th {
 }
 
 .btn-back:hover {
-    color: #fff;
+    color: var(--accent-color);
     background: rgba(255, 255, 255, 0.08);
 }
 
 /* Add Song Button */
 .btn-add {
-    background: #0033ff;
-    /* Spotify green */
-    color: #ffffff;
-    border: none;
-    font-size: 0.85rem;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
+    background: var(--accent-color);
+    color: #fff;
     font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: 0.25s;
+    gap: 8px;
+    transition: all 0.3s ease;
 }
 
 .btn-add:hover {
-    background: #001eff;
-    transform: scale(1.05);
+    /* background: var(--hover-color); */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 
+
+/* Delete button */
 .btn-delete-song {
     background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 6px;
+    color: #fff;
+    border-radius: 12px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
     cursor: pointer;
-    font-size: 0.8rem;
+    transition: all 0.25s;
 }
 
 .btn-delete-song:hover {
-    background: #ff5a4f;
+    background: #ff5a5a;
+    transform: translateY(-1px);
 }
 
 /* Playlist Cover */
 .playlist-cover {
-    width: 200px;
-    height: 200px;
-    border-radius: 14px;
-    margin-bottom: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    width: 220px;
+    height: 220px;
+    border-radius: 18px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    margin-bottom: 15px;
 }
-
 
 
 
@@ -1228,18 +1258,21 @@ th {
 
 .about-team {
     margin-top: 80px;
-    padding: 80px 20px 50px; /* lebih ruang atas & bawah */
+    padding: 80px 20px 50px;
+    /* lebih ruang atas & bawah */
     text-align: center;
 }
 
 .about-team h2 {
-    font-size: 3rem; /* besarkan tajuk */
+    font-size: 3rem;
+    /* besarkan tajuk */
     color: var(--accent-color);
     margin-bottom: 15px;
 }
 
 .about-team p {
-    font-size: 1.1rem; /* sedikit lebih besar */
+    font-size: 1.1rem;
+    /* sedikit lebih besar */
     color: var(--text-color);
     opacity: 0.8;
     margin-bottom: 40px;
@@ -1247,18 +1280,22 @@ th {
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 2 columns */
+    grid-template-columns: repeat(4, 1fr);
+    /* 2 columns */
     gap: 30px;
     justify-items: center;
     align-items: start;
-    max-width: 1200px; /* optional, supaya tak terlalu besar */
-    margin: 0 auto; /* center grid */
+    max-width: 1200px;
+    /* optional, supaya tak terlalu besar */
+    margin: 0 auto;
+    /* center grid */
 }
 
 /* Card lebih besar */
 .team-member {
-    width: 100%;  
-    max-width: 350px; /* optional limit */
+    width: 100%;
+    max-width: 350px;
+    /* optional limit */
     padding: 30px;
     border-radius: 20px;
     background: var(--card-bg);
@@ -1268,9 +1305,10 @@ th {
     align-items: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .team-member:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
 }
 
 /* Gambar lebih besar */
@@ -1281,24 +1319,31 @@ th {
 }
 
 .team-member h3 {
-    font-size: 1.5rem; /* besarkan nama */
+    font-size: 1.5rem;
+    /* besarkan nama */
     color: var(--accent-color);
     margin-bottom: 8px;
-     object-fit: cover;
+    object-fit: cover;
 }
 
 .team-member p {
-    font-size: 1rem; /* besarkan role */
+    font-size: 1rem;
+    /* besarkan role */
     color: var(--text-color);
     opacity: 0.75;
 }
 
 @media (max-width: 768px) {
     .team-grid {
-        grid-template-columns: 1fr; /* satu column untuk mobile */
+        grid-template-columns: 1fr;
+        /* satu column untuk mobile */
     }
-    
+
     .team-member {
-        max-width: 80%; /* card lebih kecil supaya muat mobile */
+        max-width: 80%;
+        /* card lebih kecil supaya muat mobile */
     }
 }
+
+
+
