@@ -258,7 +258,7 @@
                 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
                 <h1 style="color: var(--accent-color); font-size: 1.5rem;"><strong>Playlist</strong></h1>
                 <!-- <input type="text" id="searchInput" placeholder="Search by song or artist..." onkeyup="filterPlaylist()"> -->
-                <button id="addPlaylistBtn" class="btn-add">+ Create Playlist</button>
+                <button id="addPlaylistBtn" class="btn-add" style="color: var(--card-bg);">+ Create Playlist</button>
             </section>
 
             <hr style="color: grey;">
@@ -276,11 +276,11 @@
                     </p>
                     <div id="defaultCovers" style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
                         <img src="assets/albumart1.jpg" class="default-cover"
-                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
                         <img src="assets/albumart2.jpg" class="default-cover"
-                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
                         <img src="assets/albumart3.jpg" class="default-cover"
-                            style="width:60px; height:60px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
 
                     </div>
                     <div class="popup-buttons">
@@ -313,8 +313,8 @@
                         <i class="fas fa-arrow-left"></i> Back
                     </button>
 
-                    <button id="addSongBtn" class="btn-add">
-                        <i class="fas fa-plus"></i> Add Song
+                    <button id="addSongBtn" class="btn-add" style="color: var(--card-bg);>
+                        <i class="fas fa-plus"></i>+ Add Song
                     </button>
                 </div>
 
@@ -368,6 +368,15 @@
             </div>
 
 
+            <div class="confirm-overlay" id="confirmOverlay">
+                <div class="confirm-box">
+                    <p id="confirmMessage">Are you sure?</p>
+                    <div class="btns">
+                        <button class="btn-confirm" id="confirmYes">Yes</button>
+                        <button class="btn-cancel" id="confirmNo">No</button>
+                    </div>
+                </div>
+            </div>
 
             <section class="export-area">
                 <button onclick="printPlaylist()" class="btn-print">
@@ -381,7 +390,53 @@
 
 
 
+    <script>
+        function showConfirm(message) {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('confirmOverlay');
+                const msg = document.getElementById('confirmMessage');
+                const yesBtn = document.getElementById('confirmYes');
+                const noBtn = document.getElementById('confirmNo');
 
+                msg.textContent = message;
+                overlay.style.display = 'flex';
+
+                const cleanUp = () => {
+                    overlay.style.display = 'none';
+                    yesBtn.removeEventListener('click', onYes);
+                    noBtn.removeEventListener('click', onNo);
+                };
+
+                const onYes = () => { cleanUp(); resolve(true); };
+                const onNo = () => { cleanUp(); resolve(false); };
+
+                yesBtn.addEventListener('click', onYes);
+                noBtn.addEventListener('click', onNo);
+            });
+        }
+
+        async function deletePlaylist(index) {
+            const confirmDelete = await showConfirm(`Are you sure you want to delete playlist "${playlists[index].name}"?`);
+            if (!confirmDelete) return;
+
+            playlists.splice(index, 1);
+            saveToLocalStorage();
+            displayPlaylist();
+            showToast('Playlist deleted successfully ✅', 'success');
+        }
+
+        async function deleteSong(songIndex) {
+            const song = playlists[currentPlaylistIndex].songs[songIndex];
+            const confirmDelete = await showConfirm(`Are you sure you want to delete song "${song.title}"?`);
+            if (!confirmDelete) return;
+
+            playlists[currentPlaylistIndex].songs.splice(songIndex, 1);
+            saveToLocalStorage();
+            displaySongs();
+            showToast('Song deleted successfully ✅', 'success');
+        }
+
+    </script>
     <script>// Pilih default cover
         const defaultCovers = document.querySelectorAll('.default-cover');
         let selectedDefaultCover = null;
@@ -547,52 +602,46 @@
         let playlists = [];
         // Fungsi display playlist
         function displayPlaylist() {
-            playlistBody.innerHTML = ''; // Kosongkan table
+            playlistBody.innerHTML = '';
             playlists.forEach((playlist, index) => {
                 const row = document.createElement('tr');
-                // Nomor
+
+                // No
                 const noCell = document.createElement('td');
                 noCell.textContent = index + 1;
                 row.appendChild(noCell);
-                // Cover Image
+
+                // Cover
                 const coverCell = document.createElement('td');
                 const img = document.createElement('img');
-                img.src = playlist.image || 'assets/default-cover.png'; // default kalau tak ada gambar
+                img.src = playlist.image || 'assets/default-cover.png';
                 img.style.width = '50px';
                 img.style.height = '50px';
                 img.style.objectFit = 'cover';
                 img.style.borderRadius = '5px';
                 coverCell.appendChild(img);
                 row.appendChild(coverCell);
-                // Playlist Name
+
+                // Name
                 const nameCell = document.createElement('td');
                 nameCell.textContent = playlist.name;
                 row.appendChild(nameCell);
+
                 // Action
                 const actionCell = document.createElement('td');
                 const deleteBtn = document.createElement('button');
                 deleteBtn.textContent = 'Delete';
-                deleteBtn.style.background = '#e74c3c';
-                deleteBtn.style.color = '#fff';
-                deleteBtn.style.border = 'none';
-                deleteBtn.style.padding = '5px 10px';
-                deleteBtn.style.borderRadius = '5px';
-                deleteBtn.style.cursor = 'pointer';
-
+                deleteBtn.className = 'btn-delete-song';
                 deleteBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
                     e.stopPropagation();
-
-                    playlists.splice(index, 1);
-                    saveToLocalStorage();
-                    displayPlaylist();
+                    deletePlaylist(index);
                 });
-
-
                 actionCell.appendChild(deleteBtn);
                 row.appendChild(actionCell);
+
                 row.style.cursor = 'pointer';
                 row.onclick = () => openPlaylistDetail(index);
+
                 playlistBody.appendChild(row);
             });
         }
@@ -659,7 +708,6 @@
             songBody.innerHTML = '';
 
             const songs = playlists[currentPlaylistIndex].songs || [];
-
             songs.forEach((song, index) => {
                 const row = document.createElement('tr');
 
@@ -667,38 +715,49 @@
             <td>${index + 1}</td>
             <td>${song.title}</td>
             <td>${song.artist}</td>
-            <td>
-                <button class="btn-delete-song">Delete</button>
-            </td>
+            <td><button class="btn-delete-song">Delete</button></td>
         `;
 
-                /* 🔴 DELETE BUTTON */
+                // Delete button
                 row.querySelector('.btn-delete-song').addEventListener('click', (e) => {
-                    e.stopPropagation();     // 🚫 jangan trigger row click
-                    removeSong(index);
+                    e.stopPropagation();
+                    deleteSong(index);
                 });
 
-                /* ▶ PLAY SONG BILA CLICK ROW */
-                row.addEventListener('click', () => {
-                    playSong(song);
-                });
+                // Play on row click
+                row.addEventListener('click', () => playSong(song));
 
                 songBody.appendChild(row);
             });
         }
 
-
         function saveToLocalStorage() {
             localStorage.setItem('playlists', JSON.stringify(playlists));
         }
+        // =====================
+        // Toast Notification
+        // =====================
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
 
+            // Warna ikut type
+            if (type === 'success') toast.style.background = 'var(--accent-color)';
+            if (type === 'error') toast.style.background = '#e74c3c';
+            if (type === 'info') toast.style.background = 'rgba(0,0,0,0.7)';
 
+            document.body.appendChild(toast);
 
+            setTimeout(() => toast.classList.add('show'), 50);
 
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
 
-
-
-
+    
         // Fungsi print
         function printPlaylist() {
             const printContent = document.getElementById('playlistTable').outerHTML;
@@ -827,7 +886,7 @@
         <div class="footer-container">
             <!-- Branding -->
             <div class="footer-brand">
-                <h2><b>onBeat</b></h2>
+                <h2 style="text-shadow: 0 0 20px rgba(0,0,0,0.5);"><b>onBeat</b></h2>
                 <p>Your ultimate music companion</p>
             </div>
 

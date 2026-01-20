@@ -504,7 +504,11 @@ tr:hover {
     font-weight: bold;
     letter-spacing: 1px;
     color: #ff009d;
-    /* font-size: ; */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: fadeIn 1.5s ease forwards;
+    opacity: 0;
 
 }
 
@@ -1367,4 +1371,95 @@ tr:hover {
 .toast.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+
+
+
+
+
+/* Floating musical notes */
+.note {
+    position: absolute;
+    bottom: -50px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    animation-name: floatUp;
+    animation-timing-function: linear;
+    animation-iteration-count: 1; /* sekali je */
+    will-change: transform;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity:1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity:0; }
+}
+
+
+
+
+
+
+/* ================= CUSTOM CONFIRM MODAL ================= */
+.confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.confirm-box {
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 25px 30px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.confirm-box p {
+    font-size: 1.1rem;
+}
+
+.confirm-box .btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.confirm-box .btn-confirm,
+.confirm-box .btn-cancel {
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.confirm-box .btn-confirm {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.confirm-box .btn-confirm:hover {
+    transform: translateY(-2px);
+}
+
+.confirm-box .btn-cancel {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-color);
+}
+
+.confirm-box .btn-cancel:hover {
+    background: rgba(255,255,255,0.2);
 }
