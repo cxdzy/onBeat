@@ -396,7 +396,7 @@ tr:hover {
     /* Bahagian tengah lebih besar sedikit */
 }
 
-/* Hiasan List Lagu di Kanan */
+/* ================= Hiasan List Lagu di Kanan ================= */
 .song-list button {
     display: block;
     width: 100%;
@@ -409,9 +409,7 @@ tr:hover {
     cursor: pointer;
     text-align: left;
     border-left: 4px solid var(--accent-color);
-}
 
-.song-list button {
     transition: background 0.2s, transform 0.15s;
     cursor: grab;
 }
@@ -425,6 +423,46 @@ tr:hover {
     background: var(--accent-color);
     color: white;
 }
+
+/* ================= PLAYING SONG HIGHLIGHT ================= */
+.song-list button.active {
+    background: linear-gradient(
+        to right,
+        rgba(0, 255, 242, 0.22),
+        rgba(0, 0, 0, 0.35)
+    );
+    color: var(--accent-color);        /* pure white */
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(0, 255, 242, 0.4);
+    font-size: 0.95rem;
+}
+
+/* Left accent bar */
+/* .song-list button.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10%;
+    width: 4px;
+    height: 80%;
+    background: var(--accent-color);
+    border-radius: 4px;
+} */
+
+/* Icon color */
+.song-list button i {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.song-list button.active i {
+    color: var(--accent-color);
+}
+
+/* Hover effect for non-active button only */
+.song-list button:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 
 .volume-container {
     position: fixed;
@@ -1015,6 +1053,29 @@ tr:hover {
 
 
 
+.file-upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px dashed rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.file-upload:hover {
+  border-color: var(--accent-color);
+}
+
+.file-upload input {
+  display: none;
+}
+
+
+
+
+
 
 
 
@@ -1142,44 +1203,53 @@ tr:hover {
 
 
 
-
+/* ================= FOOTER ================= */
 
 .site-footer {
-    /* background: linear-gradient(135deg, #1a1a1a, #1fa307); */
     background: var(--card-bg);
     color: var(--text-color);
-    /* text ikut theme */
-    padding: 40px 20px 20px;
-    font-family: 'Poppins', sans-serif;
-    margin-top: 20px;
+    padding: 50px 20px 20px;
+    margin-top: 40px;
+    text-align: center;
 }
 
+/* MAIN CONTAINER */
 .footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
+
+    display: flex;
+    justify-content: center;
+    /* ✅ REAL CENTERING */
+    align-items: flex-start;
+    gap: 40px;
 }
 
+/* FORCE ALL COLUMNS SAME WIDTH */
+.footer-container>div {
+    flex: 1;
+    /* ✅ 1 : 1 : 1 */
+    text-align: center;
+}
+
+/* BRAND */
 .footer-brand h2 {
     font-size: 1.8rem;
-    margin-bottom: 5px;
     color: #ae0e71;
-    /* spotify green vibe */
+    margin-bottom: 6px;
 }
 
 .footer-brand p {
     font-size: 0.9rem;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
+/* TEAM */
 .footer-team h3,
 .footer-links h3 {
     font-size: 1.1rem;
-    margin-bottom: 8px;
     color: var(--accent-color);
+    margin-bottom: 8px;
 }
 
 .footer-team p {
@@ -1187,43 +1257,43 @@ tr:hover {
     opacity: 0.8;
 }
 
+/* LINKS */
 .footer-links ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-.footer-links ul li {
-    margin-bottom: 6px;
+.footer-links li {
+    margin: 6px 0;
 }
 
-.footer-links ul li a {
-    /* color: #fff; */
-    color: var(--text-color);
-    /* text ikut theme */
+.footer-links a {
     text-decoration: none;
-    transition: 0.3s;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    transition: color 0.25s ease;
 }
 
-.footer-links ul li a:hover {
-    color: #1db954;
-    text-decoration: underline;
+.footer-links a:hover {
+    color: var(--accent-color);
 }
 
+/* BOTTOM COPYRIGHT */
 .footer-bottom {
-    text-align: center;
-    margin-top: 25px;
+    margin-top: 30px;
+    padding-top: 15px;
     font-size: 0.8rem;
     opacity: 0.6;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;
         align-items: center;
-        text-align: center;
+        gap: 25px;
     }
 
     .footer-links ul li {

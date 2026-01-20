@@ -444,21 +444,27 @@
 
             <!-- Profile Image -->
             <div class="profile-upload">
-                <!-- <img id="profilePreview" src="assets/default-avatar.png" alt="Profile"> -->
+                <div style="display:flex; align-items:center; gap:15px; justify-content:center; margin-bottom:10px;">
+                    <img id="profilePreview" src="assets/default-avatar.png" alt="">
 
-                <label class="upload-btn">
-                    Upload Photo
-                    <input type="file" id="profileInput" accept="image/*">
-                </label>
+                    <label class="upload-btn">
+                        Upload Photo
+                        <input type="file" id="profileInput" accept="image/*">
+                    </label>
+                </div>
 
-                <p style="font-size:0.8rem; margin:10px 0;">Or Choose an Avatar</p>
+                <!-- <p style="font-size:0.8rem; text-align:center; margin:10px 0;">
+                    Or Choose an Avatar
+                </p>
 
-                <div style="display:flex; gap:10px; justify-content:center; margin-bottom: 10px;">
+                <div style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
                     <img src="assets/avatar1.jpg" class="default-avatar">
                     <img src="assets/avatar2.jpg" class="default-avatar">
                     <img src="assets/avatar3.jpg" class="default-avatar">
-                </div>
+                </div> -->
             </div>
+
+
 
             <!-- User Inputs -->
             <input type="text" id="userName" placeholder="Your Name">
@@ -486,6 +492,17 @@
         <div class="bar"></div>
     </div>
     <script>
+        // Select popup overlay
+        const userPopup = document.getElementById("userPopup");
+
+        // Listen click pada overlay
+        userPopup.addEventListener("click", (e) => {
+            // Jika yang click bukan popup-box, tutup popup
+            if (e.target === userPopup) {
+                userPopup.style.display = "none";
+            }
+        });
+
         function showToast(message) {
             const toast = document.getElementById("toast");
             toast.textContent = message;
@@ -505,33 +522,43 @@
             document.getElementById("userPopup").style.display = "flex";
         }
 
-        // Upload image preview
         document.getElementById("profileInput").addEventListener("change", function () {
             const file = this.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = () => {
-                selectedAvatar = reader.result;
+                selectedAvatar = reader.result; // base64
                 document.getElementById("profilePreview").src = selectedAvatar;
                 clearAvatarSelection();
             };
             reader.readAsDataURL(file);
         });
 
-        // Default avatar select
         document.querySelectorAll(".default-avatar").forEach(avatar => {
             avatar.addEventListener("click", () => {
                 clearAvatarSelection();
                 avatar.classList.add("selected");
-                selectedAvatar = avatar.src;
-                document.getElementById("profilePreview").src = selectedAvatar;
+
+                // Preview tetap pakai src normal
+                document.getElementById("profilePreview").src = avatar.src;
+
+                // Convert default avatar ke base64 supaya print window OK
+                const img = new Image();
+                img.crossOrigin = "anonymous"; // penting kalau browser CORS
+                img.src = avatar.src;
+                img.onload = () => {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    selectedAvatar = canvas.toDataURL("image/png"); // base64 untuk print
+                }
             });
         });
-
         function clearAvatarSelection() {
-            document.querySelectorAll(".default-avatar")
-                .forEach(a => a.classList.remove("selected"));
+            document.querySelectorAll(".default-avatar").forEach(a => a.classList.remove("selected"));
         }
 
         // Save data
@@ -545,26 +572,28 @@
                 return;
             }
 
+            // fallback avatar
+            const avatarToSave = selectedAvatar || "assets/default-avatar.jpg";
+
             const userData = {
                 name,
                 dob,
                 gender,
-                avatar: selectedAvatar
+                avatar: avatarToSave
             };
 
             localStorage.setItem("userProfile", JSON.stringify(userData));
 
-            // Hide popup
+            // hide popup
             document.getElementById("userPopup").style.display = "none";
 
-            // Show transition
+            // optional transition animation
             const transition = document.getElementById("transition");
-            transition.classList.add("show");
+            if (transition) transition.classList.add("show");
 
-            // Redirect after animation
             setTimeout(() => {
                 window.location.href = "index.html";
-            }, 1400);
+            }, 1200);
         }
 
 

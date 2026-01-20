@@ -387,6 +387,105 @@ const tracks = [
 
             { time: 217, text: "You saved my heart from the fate of Ophelia" }
         ]
+    },
+        {
+        title: "Arctic Monkeys - No 1 Party Anthem",
+        artist: "Arctic Monkeys",
+        src: "assets/Arctic Monkeys - No. 1 Party Anthem (Lyrics).mp3",
+        cover: "assets/articmonkeyscover.jpg",
+        lyrics: [
+            { time: 0.14, text: "One, two, three, four" },
+
+            { time: 3.50, text: "So you're on the prowl wondering whether she left already or not" },
+            { time: 11.08, text: "Leather jacket, collar popped like antenna, never knowing when to stop" },
+            { time: 18.86, text: "Sunglasses indoors, par for the course, lights in the floors and sweat on the walls" },
+
+            { time: 29.30, text: "Cages and poles" },
+
+            { time: 35.56, text: "Call off the search for your soul or put it on hold again" },
+            { time: 41.62, text: "She's having a sly indoor smoke as she calls the folks who run this, her oldest friends" },
+            { time: 50.16, text: "Sipping and drinking, laughing at imaginary jokes as all the signals are sent" },
+            { time: 58.34, text: "Her eyes invite you to approach and it seems as though those lumps in your throat that you just swallowed have got you going" },
+
+            { time: 70.83, text: "Come on, come on, come on" },
+            { time: 75.02, text: "Come on, come on, come on" },
+            { time: 77.90, text: "Number one party anthem" },
+
+            { time: 86.92, text: "She's a certified mind blower, knowing full well that I don't" },
+            { time: 94.56, text: "May suggest there's somewhere from which I might know of just to get the ball to roll" },
+            { time: 102.30, text: "Drunken monologues, confused because it's not like I'm falling in love, I just want you to do me no good" },
+            { time: 114.56, text: "And you look like you could" },
+
+            { time: 120.88, text: "Come on, come on, come on" },
+            { time: 125.12, text: "Come on, come on, come on" },
+            { time: 128.40, text: "Number one party anthem" },
+
+            { time: 133.40, text: "Come on, come on, come on" },
+            { time: 137.56, text: "Before the moment's gone, number one party anthem" },
+
+            { time: 145.94, text: "Yeah, yeah" },
+
+            { time: 149.06, text: "The luck I've blown, the rush of blood" },
+            { time: 153.42, text: "The \"she's with me\"s, the galley truck" },
+            { time: 157.44, text: "The shutter bugs, the camera pose" },
+            { time: 161.64, text: "The black and white, the color dodge" },
+            { time: 166.04, text: "The good time girls, the cubicles" },
+            { time: 170.00, text: "The house of fun, the number one party anthem" },
+
+            { time: 180.22, text: "Oh" },
+
+            { time: 196.04, text: "Come on, come on, come on" },
+            { time: 200.30, text: "Come on, come on, come on" },
+            { time: 208.62, text: "Come on, come on, come on" },
+            { time: 210.11, text: "Come on, come on, come on" },
+            { time: 212.76, text: "Before the moment's gone, number one party anthem" },
+
+            { time: 220.93, text: "Number one party anthem" },
+            { time: 224.18, text: "Number one party anthem" },
+            { time: 229.42, text: "Yeah, yeah" }
+        ]
+
+    },
+
+        {
+        title: "The 1975 - Robbers",
+        artist: "The 1975",
+        src: "assets/The 1975 - Robbers (Lyrics).mp3",
+        cover: "assets/the1975.jpg",
+        lyrics: [
+            { time: 0.00, text: "............." },
+            { time: 41.58, text: "She had a face straight out of a magazine" },
+            { time: 50.74, text: "Got on her nerves, but you'd never leave her" },
+            { time: 60.36, text: "Heart by the clock, but it's starting to chafe" },
+            { time: 67.24, text: "And when she gets his gun, he's begging, babe, stay, stay, stay, stay, stay" },
+
+            { time: 77.14, text: "I'll give you one more time, we'll give you one more fight" },
+            { time: 86.98, text: "Said one more lie, and I know you" },
+
+            { time: 103.60, text: "Now if you never shoot, you'll never know" },
+            { time: 110.22, text: "And if you never eat, you'll never grow" },
+
+            { time: 122.86, text: "You got a pretty kind of dirty face" },
+            { time: 130.18, text: "When she's leaving your home, she's begging you to stay, stay, stay, stay, stay" },
+
+            { time: 139.42, text: "And I'll give you one more time, we'll give you one more fight" },
+            { time: 149.60, text: "Said one more line, be right, cause I know you" },
+
+            { time: 161.36, text: "Well now that you've got your gun, it's much harder now the police have come" },
+            { time: 170.98, text: "And now I should have made just what you ask, but if you'd just take off your mask" },
+            { time: 179.58, text: "You'd find out everything's gone wrong" },
+
+            { time: 189.00, text: "Now everybody's dead, and they're driving past my old school" },
+            { time: 198.16, text: "And he's got his gun, and he's got his suit on" },
+            { time: 203.26, text: "And she says, babe, you look so cool" },
+
+            { time: 211.30, text: "You look so cool" },
+            { time: 216.08, text: "You look so cool" },
+            { time: 216.40, text: "You look so cool" },
+            { time: 219.00, text: "You look so cool" },
+            { time: 225.66, text: "You look so cool" }
+        ]
+
     }
 ];
 
@@ -455,6 +554,33 @@ function renderSongList() {
 }
 renderSongList();
 
+function highlightPlayingSong(index) {
+    document
+        .querySelectorAll("#songList button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    const activeBtn = document.querySelector(
+        `#songList button[data-index="${index}"]`
+    );
+
+    if (activeBtn) {
+        activeBtn.classList.add("active");
+    }
+}
+
+function highlightPlayingSong(index) {
+    document
+        .querySelectorAll(".song-list button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    const activeBtn = document.querySelector(
+        `.song-list button[data-index="${index}"]`
+    );
+
+    if (activeBtn) activeBtn.classList.add("active");
+}
+
+
 function toggleRepeat() {
     isRepeat = !isRepeat;
 
@@ -477,6 +603,8 @@ function playDirect(index) {
     currentTrackIndex = index;
     loadTrack(index);
     audio.play();
+
+        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
 
     totalSongsPlayed++;
     updateStats();
@@ -587,6 +715,9 @@ function nextSong() {
 
     loadTrack(currentTrackIndex);
     audio.play();
+
+        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
+
 }
 
 
@@ -595,8 +726,14 @@ function prevSong() {
         (currentTrackIndex - 1 + tracks.length) % tracks.length;
     loadTrack(currentTrackIndex);
     audio.play();
+
+        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
+
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
+
+loadTrack(currentTrackIndex);
+highlightPlayingSong(currentTrackIndex);
 
 function togglePlay() {
     const btn = document.getElementById('playBtn');
@@ -1085,6 +1222,20 @@ audio.addEventListener("pause", () => {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
     document.getElementById("floatingPlayBtn").innerHTML = '<i class="fas fa-play"></i>';
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
