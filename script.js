@@ -388,7 +388,7 @@ const tracks = [
             { time: 217, text: "You saved my heart from the fate of Ophelia" }
         ]
     },
-        {
+    {
         title: "Arctic Monkeys - No 1 Party Anthem",
         artist: "Arctic Monkeys",
         src: "assets/Arctic Monkeys - No. 1 Party Anthem (Lyrics).mp3",
@@ -447,7 +447,7 @@ const tracks = [
 
     },
 
-        {
+    {
         title: "The 1975 - Robbers",
         artist: "The 1975",
         src: "assets/The 1975 - Robbers (Lyrics).mp3",
@@ -486,8 +486,70 @@ const tracks = [
             { time: 225.66, text: "You look so cool" }
         ]
 
-    }
+    },
+    {
+        title: "TWICE (트와이스) - TT",
+        artist: "TWICE",
+        src: "assets/TWICE (트와이스) - TT [HANROMENG Color Coded Lyrics].mp3",
+        cover: "assets/twicett.jpg",
+        lyrics: [
+
+        ]
+
+    },
+    {
+        title: "TWICE (트와이스) - What is Love?",
+        artist: "TWICE",
+        src: "assets/TWICE (트와이스) - What is Love_ [HANROMENG Color Coded Lyrics].mp3",
+        cover: "assets/twice.jpg",
+        lyrics: [
+
+        ]
+
+    },
+    {
+        title: "Die On This Hill",
+        artist: "SIENNA SPIRO",
+        src: "assets/SIENNA SPIRO - Die On This Hill (Audio).mp3",
+        cover: "assets/dieonthishill.jpg",
+        lyrics: [
+
+        ]
+
+    },
+    {
+        title: "FROZEN - Let It Go",
+        artist: "Idina Manzel",
+        src: "assets/FROZEN  Let It Go Sing-along  Official Disney UK.mp3",
+        cover: "assets/frozen.jpg",
+        lyrics: [
+
+        ]
+
+    },
+    {
+        title: "Welcome To The Black Parade",
+        artist: "My Chemical Romance",
+        src: "assets/My Chemical Romance - Welcome To The Black Parade (Lyrics).mp3",
+        cover: "assets/Blackparade.jpg",
+        lyrics: [
+
+        ]
+
+    },
+    {
+        title: "BIRDS OF A FEATHER",
+        artist: "Billie Eilish",
+        src: "assets/Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video) [d5gf9dXbPi0].mp3",
+        cover: "assets/bof.jpg",
+        lyrics: [
+
+        ]
+
+    },
+
 ];
+
 
 
 let currentTrackIndex = 0;
@@ -604,7 +666,7 @@ function playDirect(index) {
     loadTrack(index);
     audio.play();
 
-        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
+    highlightPlayingSong(currentTrackIndex); // 🔥 ADD
 
     totalSongsPlayed++;
     updateStats();
@@ -716,7 +778,7 @@ function nextSong() {
     loadTrack(currentTrackIndex);
     audio.play();
 
-        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
+    highlightPlayingSong(currentTrackIndex); // 🔥 ADD
 
 }
 
@@ -727,7 +789,7 @@ function prevSong() {
     loadTrack(currentTrackIndex);
     audio.play();
 
-        highlightPlayingSong(currentTrackIndex); // 🔥 ADD
+    highlightPlayingSong(currentTrackIndex); // 🔥 ADD
 
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
@@ -1225,7 +1287,62 @@ audio.addEventListener("pause", () => {
 
 
 
+/* =========================================
+   THEME & COLORBLIND LOGIC (UPDATED)
+   ========================================= */
 
+// Kita tunggu DOM content loaded supaya element 'themeToggle' wujud
+document.addEventListener('DOMContentLoaded', () => {
+    
+    const themeToggle = document.getElementById('themeToggle');
+    const colorBlindToggle = document.getElementById('colorBlindToggle');
+    const htmlElement = document.documentElement;
+
+    // 1. SYNC UI: Pastikan checkbox ikut setting LocalStorage
+    // (Warna dah set dekat <head>, ni cuma nak betulkan slider on/off)
+    
+    const currentTheme = localStorage.getItem('theme');
+    const isColorBlind = localStorage.getItem('colorblind');
+
+    if (currentTheme === 'dark') {
+        themeToggle.checked = true;
+    } else {
+        themeToggle.checked = false;
+    }
+
+    if (isColorBlind === 'true') {
+        colorBlindToggle.checked = true;
+    } else {
+        colorBlindToggle.checked = false;
+    }
+
+    // 2. EVENT LISTENER: Bila user tekan switch masa tengah guna
+    
+    // Dark Mode Toggle
+    themeToggle.addEventListener('change', function () {
+        if (this.checked) {
+            htmlElement.classList.add('dark-theme');
+            htmlElement.classList.remove('light-theme');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            htmlElement.classList.remove('dark-theme');
+            htmlElement.classList.add('light-theme');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Color Blind Toggle
+    colorBlindToggle.addEventListener('change', function () {
+        if (this.checked) {
+            htmlElement.classList.add('colorblind');
+            localStorage.setItem('colorblind', 'true');
+        } else {
+            htmlElement.classList.remove('colorblind');
+            localStorage.setItem('colorblind', 'false');
+        }
+    });
+
+});
 
 
 

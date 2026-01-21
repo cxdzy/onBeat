@@ -3,8 +3,25 @@
 
 <head>
     <script>
-        const savedTheme = localStorage.getItem("selectedTheme") || "light";
-        document.documentElement.className = savedTheme + "-theme";
+        (function () {
+            // Ambil data dari LocalStorage serta-merta
+            const savedTheme = localStorage.getItem('theme');
+            const savedColorBlind = localStorage.getItem('colorblind');
+            const htmlElement = document.documentElement;
+
+            // Apply class TERUS sebelum page render
+            if (savedTheme === 'dark') {
+                htmlElement.classList.add('dark-theme');
+                htmlElement.classList.remove('light-theme');
+            } else {
+                htmlElement.classList.add('light-theme');
+                htmlElement.classList.remove('dark-theme');
+            }
+
+            if (savedColorBlind === 'true') {
+                htmlElement.classList.add('colorblind');
+            }
+        })();
     </script>
     <meta charset="UTF-8">
     <title>onBeat | Music Experience</title>
@@ -145,10 +162,23 @@
 
 
 
-        <div class="theme-switch">
-            <button onclick="changeTheme('light')"><i class="fas fa-sun" style="color: var(--card-bg);"></i></button>
-            <button onclick="changeTheme('dark')"><i class="fas fa-moon" style="color: var(--card-bg);"></i></button>
-            <!-- <button onclick="changeTheme('colorblind')">High Contrast</button> -->
+        <div class="theme-toggle-container">
+            <div class="toggle-group">
+                <i class="fas fa-sun"></i>
+                <label class="switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+                <i class="fas fa-moon"></i>
+            </div>
+
+            <div class="toggle-group">
+                <label class="switch">
+                    <input type="checkbox" id="colorBlindToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">Color Blind</span>
+            </div>
         </div>
     </nav>
 
