@@ -303,36 +303,7 @@
             </section>
 
             <hr style="color: grey;">
-            <!-- Popup Form -->
-            <div id="playlistPopup" class="popup-overlay" style="display:none;">
-                <div class="popup-content">
-                    <h3>Create New Playlist</h3>
-                    <label for="playlistName">Playlist Name:</label>
-                    <input type="text" id="playlistName" placeholder="Enter playlist name">
 
-                    <label for="playlistImage">Cover Image:</label>
-                    <label class="file-upload">
-                        <input type="file" id="playlistImage" accept="image/*">
-                        <i class="fas fa-image"></i>
-                        Choose image
-                    </label>
-                    <p style="margin-top:10px; font-size:0.9rem; color: var(--text-color);">Or choose a default cover:
-                    </p>
-                    <div id="defaultCovers" style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
-                        <img src="assets/albumart1.jpg" class="default-cover"
-                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
-                        <img src="assets/albumart2.jpg" class="default-cover"
-                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
-                        <img src="assets/albumart3.jpg" class="default-cover"
-                            style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
-
-                    </div>
-                    <div class="popup-buttons">
-                        <button id="savePlaylistBtn" type="button">Save</button>
-                        <button id="cancelPlaylistBtn">Cancel</button>
-                    </div>
-                </div>
-            </div>
 
             <div id="playlistListView">
                 <table id="playlistTable">
@@ -362,6 +333,7 @@
                     </button>
                 </div>
 
+
                 <img id="detailImage" src="" alt="Playlist Cover" class="playlist-cover">
                 <h2 id="detailTitle"></h2>
 
@@ -385,32 +357,12 @@
             </div>
 
 
-            <!-- Popup pilih lagu sedia ada -->
-            <div id="songPopup" class="popup-overlay" style="display:none;">
-                <div class="popup-content">
-                    <h3>Select Song to Add</h3>
-                    <div id="allSongsList">
-                        <!-- Senarai lagu akan generate secara JS -->
-                    </div>
-                    <div class="popup-buttons">
-                        <button id="saveSongBtn">Save</button>
-                        <button id="cancelSongBtn">Cancel</button>
-                    </div>
-                </div>
-            </div>
 
 
 
 
-            <div class="confirm-overlay" id="confirmOverlay">
-                <div class="confirm-box">
-                    <p id="confirmMessage">Are you sure?</p>
-                    <div class="btns">
-                        <button class="btn-confirm" id="confirmYes">Yes</button>
-                        <button class="btn-cancel" id="confirmNo">No</button>
-                    </div>
-                </div>
-            </div>
+
+
 
 
         </main>
@@ -432,9 +384,76 @@
 
 
 
+    <div id="songPopup" class="popup-overlay" style="display:none;">
+        <div class="popup-content">
+            <h3>Select Song to Add</h3>
+            <div id="allSongsList">
+                <!-- Senarai lagu akan generate secara JS -->
+            </div>
+            <div class="popup-buttons">
+                <button id="saveSongBtn">Save</button>
+                <button id="cancelSongBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Popup Form -->
+    <div id="playlistPopup" class="popup-overlay" style="display:none;">
+        <div class="popup-content">
+            <h3>Create New Playlist</h3>
+            <label for="playlistName">Playlist Name:</label>
+            <input type="text" id="playlistName" placeholder="Enter playlist name">
+
+            <label for="playlistImage">Cover Image:</label>
+            <label class="file-upload">
+                <input type="file" id="playlistImage" accept="image/*">
+                <i class="fas fa-image"></i>
+                Choose image
+            </label>
+            <p style="margin-top:10px; font-size:0.9rem; color: var(--text-color);">Or choose a default cover:
+            </p>
+            <div id="defaultCovers" style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
+                <img src="assets/albumart1.jpg" class="default-cover"
+                    style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                <img src="assets/albumart2.jpg" class="default-cover"
+                    style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+                <img src="assets/albumart3.jpg" class="default-cover"
+                    style="width:120px; height:120px; border-radius:10px; cursor:pointer; border: 2px solid transparent;">
+
+            </div>
+            <div class="popup-buttons">
+                <button id="savePlaylistBtn" type="button">Save</button>
+                <button id="cancelPlaylistBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <p id="confirmMessage">Are you sure?</p>
+            <div class="btns">
+                <button class="btn-confirm" id="confirmYes">Yes</button>
+                <button class="btn-cancel" id="confirmNo">No</button>
+            </div>
+        </div>
+    </div>
 
 
     <script>
+        // ==========================================
+        // FIX: KLIK LUAR UNTUK TUTUP (SONG POPUP)
+        // ==========================================
+        const songPopupOverlay = document.getElementById('songPopup');
+
+        if (songPopupOverlay) {
+            songPopupOverlay.addEventListener('click', function (e) {
+                // e.target = benda yang kita klik
+                // songPopupOverlay = background gelap tu
+                // Kalau user klik background (bukan kotak putih), tutup popup.
+                if (e.target === songPopupOverlay) {
+                    songPopupOverlay.style.display = 'none';
+                }
+            });
+        }
         function showConfirm(message) {
             return new Promise((resolve) => {
                 const overlay = document.getElementById('confirmOverlay');
@@ -983,6 +1002,7 @@
 
 
 
+
     <div id="aboutPage" class="page" style="display:none;">
         <section class="about-container">
             <div class="about-hero">
@@ -1072,6 +1092,8 @@
         <input type="range" id="volumeSlider" min="0" max="1" step="0.01" oninput="adjustVolume()">
         <span id="volumeLabel">10%</span>
     </div>
+
+
 
 
 

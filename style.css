@@ -851,7 +851,38 @@ tr:hover {
     color: #fff;
     transform: scale(1.02);
 }
+/* ================= CUSTOM SCROLLBAR UNTUK SONG LIST ================= */
 
+/* 1. Setting untuk Firefox */
+#allSongsList {
+    scrollbar-width: thin; /* Scrollbar nipis */
+    scrollbar-color: rgba(155, 155, 155, 0.5) transparent; /* Warna thumb & track */
+    padding-right: 10px; /* Jarak sikit supaya tak rapat dinding */
+}
+
+/* 2. Setting untuk Chrome, Edge, Safari (Webkit) */
+
+/* Lebar scrollbar */
+#allSongsList::-webkit-scrollbar {
+    width: 6px; /* Nipis dan elegan */
+}
+
+/* Track (Landasan scrollbar) - Kita buat transparent */
+#allSongsList::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 5px 0; /* Jarak atas bawah sikit */
+}
+
+/* Thumb (Benda yang kita tarik) */
+#allSongsList::-webkit-scrollbar-thumb {
+    background-color: rgba(155, 155, 155, 0.3); /* Kelabu cair (tak ganggu mata) */
+    border-radius: 20px; /* Bentuk pil/bulat */
+}
+
+/* Bila mouse hover dekat scrollbar */
+#allSongsList::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-color); /* Bertukar jadi warna tema (Biru/Pink/Cyan) */
+}
 
 
 
