@@ -24,6 +24,7 @@
         })();
     </script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>onBeat | Music Experience</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -194,7 +195,7 @@
 
 
 
-    <div id="homePage">
+    <div id="homePage" class="page-content">
 
 
         <main class="app-container">
@@ -292,7 +293,7 @@
 
 
 
-    <div id="playlistPage" style="display:none;">
+    <div id="playlistPage" class="page-content" style="display:none;">
         <main class="playlist-container">
             <section class="search-bar"
                 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
@@ -398,23 +399,7 @@
                 </div>
             </div>
 
-            <div class="floating-controls">
-                <button onclick="prevSong()" title="Previous">
-                    <i class="fas fa-backward"></i>
-                </button>
 
-                <button onclick="togglePlay()" id="floatingPlayBtn" title="Play / Pause">
-                    <i class="fas fa-play"></i>
-                </button>
-
-                <button onclick="nextSong()" title="Next">
-                    <i class="fas fa-forward"></i>
-                </button>
-
-                <!-- <button id="repeatBtn" onclick="toggleRepeat()" class="control-btn">
-                    <i class="fas fa-redo"></i>
-                </button> -->
-            </div>
 
 
             <div class="confirm-overlay" id="confirmOverlay">
@@ -429,6 +414,20 @@
 
 
         </main>
+        <div class="floating-controls">
+            <button onclick="prevSong()" title="Previous">
+                <i class="fas fa-backward"></i>
+            </button>
+
+            <button onclick="togglePlay()" id="floatingPlayBtn" title="Play / Pause">
+                <i class="fas fa-play"></i>
+            </button>
+
+            <button onclick="nextSong()" title="Next">
+                <i class="fas fa-forward"></i>
+            </button>
+
+        </div>
     </div>
 
 

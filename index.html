@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>onBeat | Music Experience</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -422,6 +423,158 @@
             to {
                 transform: scale(1);
                 opacity: 1;
+            }
+        }
+
+        /* ============================================================
+   MOBILE RESPONSIVE (Phone Only)
+   Code ini tidak akan ganggu paparan Desktop/Laptop
+   ============================================================ */
+        @media (max-width: 768px) {
+
+            /* 1. BETULKAN NAVIGATION BAR */
+            .main-nav {
+                flex-direction: column;
+                /* Susun menegak */
+                height: auto;
+                padding: 20px 15px;
+                gap: 15px;
+            }
+
+            .main-nav ul {
+                flex-wrap: wrap;
+                /* Menu boleh turun baris kalau sempit */
+                gap: 15px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo-container {
+                margin-bottom: 5px;
+            }
+
+            .user-input {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .user-input input {
+                width: 100%;
+                /* Search bar penuh lebar skrin */
+            }
+
+            .theme-toggle-container {
+                margin-top: 10px;
+                width: 100%;
+            }
+
+            /* 2. BETULKAN HOME PAGE (Kotak Player & Lirik) */
+            .app-container {
+                flex-direction: column;
+                /* Susun kotak menegak */
+                padding: 0 10px;
+                margin-top: 10px;
+                align-items: center;
+            }
+
+            /* Side panel (Lirik & Library) dan Player Center jadi lebar penuh */
+            .side-panel,
+            .player-center {
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+                flex: none;
+                /* Matikan ratio flex desktop */
+            }
+
+            /* Hadkan tinggi lirik & library supaya tak panjang sangat kat phone */
+            .side-panel {
+                max-height: 400px;
+            }
+
+            /* Gambar album player dikecilkan sikit */
+            #albumArt {
+                width: 200px;
+                height: 200px;
+            }
+
+            /* 3. BETULKAN PLAYLIST PAGE */
+            /* Table lagu biasanya pecah di mobile, kita buat dia boleh scroll tepi */
+            #playlistListView,
+            #playlistDetailView {
+                overflow-x: auto;
+                /* Scroll kiri-kanan jika table lebar */
+                width: 100%;
+                display: block;
+                /* Pastikan boleh scroll */
+            }
+
+            /* Pastikan table tak penyek */
+            table {
+                min-width: 600px;
+                /* Paksa table lebar supaya scroll muncul */
+            }
+
+            .playlist-header {
+                flex-direction: column;
+                /* Butang Add Song duduk bawah */
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            /* 4. BETULKAN ABOUT PAGE (Team Grid) */
+            .about-container {
+                padding-top: 40px;
+                /* Kurangkan padding atas */
+            }
+
+            .about-title {
+                font-size: 2.5rem;
+                /* Kecilkan sikit tajuk */
+            }
+
+            /* Susun ahli kumpulan 1 baris ke bawah */
+            .team-grid {
+                grid-template-columns: 1fr;
+                /* 1 column sahaja */
+                gap: 30px;
+                width: 100%;
+            }
+
+            .team-member {
+                max-width: 100%;
+                /* Card penuhi skrin */
+            }
+
+            /* 5. BETULKAN FLOATING CONTROLS & VOLUME */
+            /* Naikkan sikit supaya tak kena kacau dengan navigation phone */
+            .floating-controls {
+                bottom: 80px;
+                right: 15px;
+                padding: 10px 14px;
+                transform: scale(0.9);
+                /* Kecilkan sikit */
+            }
+
+            /* Volume slider kadang kacau view, kita kecilkan */
+            .volume-container {
+                bottom: 80px;
+                left: 15px;
+                padding: 10px;
+                transform: scale(0.9);
+                /* Kecilkan sikit */
+                width: auto;
+            }
+
+            /* Slider volume jadi pendek sikit kat phone */
+            .volume-container:hover #volumeSlider {
+                width: 100px;
+            }
+
+            /* Footer susun menegak */
+            .footer-container {
+                flex-direction: column;
+                gap: 30px;
             }
         }
     </style>

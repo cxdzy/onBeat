@@ -1038,12 +1038,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function goToPage(pageId) {
-    ['homePage', 'playlistPage', 'aboutPage'].forEach(id => {
-        document.getElementById(id).className =
-            (id === pageId) ? 'page visible' : 'page hidden';
-    });
-}
+
 
 /* =========================
    INIT
@@ -1132,22 +1127,30 @@ audio.addEventListener('ended', stopVisualizer);
 //     }
 // }
 function goToPage(pageId) {
-    document.getElementById('homePage').style.display = 'none';
-    document.getElementById('playlistPage').style.display = 'none';
-    document.getElementById('aboutPage').style.display = 'none';
+    // Senarai ID page
+    const pages = ['homePage', 'playlistPage', 'aboutPage'];
 
-    const page = document.getElementById(pageId);
-    page.style.display = 'block';
+    // 1. Sorok semua page & Reset Animation
+    pages.forEach(id => {
+        const p = document.getElementById(id);
+        if (p) {
+            p.style.display = 'none'; 
+            p.classList.remove('page-animate'); // Buang class lama
+        }
+    });
 
-    // Reset animation
-    page.classList.remove('page');
-    void page.offsetWidth;
-    page.classList.add('page');
+    // 2. Tunjuk page yang user nak
+    const activePage = document.getElementById(pageId);
+    if (activePage) {
+        activePage.style.display = 'block';
+
+        // 3. MAGIC: Paksa browser "lukis semula" (Reflow) untuk restart animation
+        void activePage.offsetWidth; 
+
+        // 4. Tambah class untuk trigger CSS animation tadi
+        activePage.classList.add('page-animate');
+    }
 }
-
-
-
-
 
 
 
@@ -1261,12 +1264,7 @@ function formatTime(seconds) {
 
 
 
-function goToPage(pageId) {
-    const pages = ['homePage', 'playlistPage', 'aboutPage'];
-    pages.forEach(id => {
-        document.getElementById(id).style.display = (id === pageId) ? 'block' : 'none';
-    });
-}
+
 
 audio.addEventListener('play', () => {
     document.getElementById('visualizer').classList.add('active');
